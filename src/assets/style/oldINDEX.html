@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="./libs/css/bootstrap.css">
+    <link rel="stylesheet" href="./src/css/my-colors.css">
+    <link rel="stylesheet" href="./src/css/bs-overwritten-classes.css">
+    <link rel="stylesheet" href="./src/css/my-styles.css">
+    <title>Vocab - Trainer by Kamedin</title>
+    <!-- REGEX FÜR EMAIL INPUT:
+    Bis auf Unter und Bidnestroiche keine Sonderzeichen vor und nach dem @
+    ^[\w-]+@[\w-]+\.[a-zA-Z]{2,}$ -->
+    <!-- REGEX FÜR PASSWORD INPUT:
+    Vermeidung von NullBytes und Backslashes:
+    ^[^\x00\\]{8,}$ -->
+    <!-- REGEX FÜR NUTZERNAME INPUT:
+    3-20 Zeichen lang. Vermeide Sonderzeichen außer - und _
+    ^[\w-]{3,20}$ -->
+</head>
+<body class="bg-primary">
+<!-- MODAL ZUM REGISTRIEREN: -->
+    <div class="modal fade" id="modal_for_signup" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal_for_signup" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Account anlegen</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead fs-6 lh-1"><small>Mit diesem Account kannst du alle Anwendungen von Kamedin nutzen</small></p>
+                <p class="lead fs-6 lh-1"><small>Check <a target="_blank" href="https://www.kamed.in">sein Portfolio ab,</a> um alle Anwendungen einzusehen</small></p>
+                <hr>
+                <form onsubmit="signup_reaction(this)" class="container-fluid d-flex flex-column justify-content-between align-items-center">
+
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative">
+                        <!-- <input type="text" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_username" id="new_username" maxlength="20" required> -->
+                        <input type="text" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_username" id="new_username">
+                        <label for="new_username" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">NUTZERNAME</label>
+                    </div>
+                    <small class="me-auto text-muted mb-4">3-20 Zeichen lang. Vermeide Sonderzeichen außer - und _</small>
+
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative">
+                        <!-- <input type="password" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_password" id="new_password" minlength="8" required> -->
+                        <input type="password" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_password" id="new_password">
+                        <label for="new_password" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">PASSWORT</label>
+                    </div>
+                    <small class="me-auto text-muted mb-4">Mind. 8 Zeichen, muss Zahlen, Buchstaben und Sonderezichen enthalten</small>
+
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative mb-4">
+                        <!-- <input type="password" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_password_repeated" id="new_password_repeated" minlength="8" required> -->
+                        <input type="password" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_password_repeated" id="new_password_repeated">
+                        <label for="new_password_repeated" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">PASSWORT WIEDERHOLEN</label>
+                    </div>
+                    
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative">
+                        <!-- <input type="email" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_email" id="new_email" required> -->
+                        <input type="email" class="w-100 position-absolute bottom-0 s-0 pt-3" name="new_email" id="new_email">
+                        <label for="new_email" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">E-MAIL</label>
+                    </div>
+                    <small class="me-auto text-muted mb-4">Gib eine gültige Email - Adresse an</small>
+
+                    <div class="container-fluid d-flex justify-content-end-align-items-center final-button-container">
+                        <button type="button" class="btn rounded rounded-pill border border-secondary ms-auto me-3" data-bs-dismiss="modal">Schließen</button>
+                        <input type="submit" value="Registrieren" class="btn neutral-btns rounded rounded-pill border border-dark"></button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal_for_login" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modal_for_login" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Anmelden</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form onsubmit="login_reaction(this)" class="container-fluid d-flex flex-column justify-content-between align-items-center">
+
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative my-4">
+                        <!-- <input type="text" class="w-100 position-absolute bottom-0 s-0 pt-3" name="login_username" id="login_username" minlength="8" required> -->
+                        <input type="text" class="w-100 position-absolute bottom-0 s-0 pt-3" name="login_username" id="login_username" required>
+                        <label for="login_username" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">NUTZERNAME</label>
+                    </div>
+                    
+                    <div class="input-label-box border border-2 border-secondary rounded w-100 position-relative mb-5">
+                        <input type="password" class="w-100 position-absolute bottom-0 s-0 pt-3" name="login_password" id="login_password" required>
+                        <label for="login_password" class="position-absolute top-0 s-0 lh-1 w-100 ps-1 text-secondary">PASSWORT</label>
+                    </div>
+
+                    <div class="container-fluid d-flex justify-content-end-align-items-center final-button-container mb-3">
+                        <button type="button" class="btn rounded rounded-pill border border-secondary me-auto">Passwort vergessen?</button>
+                        <button type="button" class="btn rounded rounded-pill border border-secondary ms-auto me-3" data-bs-dismiss="modal">Schließen</button>
+                        <input type="submit" value="Anmelden" class="btn neutral-btns rounded rounded-pill border border-dark"></button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+    <!-- #------------------------------------ACTUAL CONTENT-------------------------------------------------# -->
+    <footer class="kame-link-footer container-fluid m-0 d-flex justify-content-start align-items-center">
+        <p class="kame-link-p lead text-light m-0">
+            <small>powered by 
+                <strong>
+                    <a href="https://www.kamed.in" target="_blank" class="kame-link link-light">Kamedin
+                    </a>
+                </strong>
+            </small>
+        </p>
+    </footer>
+    <header class="landingpage-wrapper container-fluid">
+        <h1 class="display-1 text-secondary"><p>Alle deine Vokabelkarten</p><p>immer und überall</p><p>dabei!</p></h1>
+    </header>
+    <nav class="login-nav bg-primary container-fluid d-flex justify-content-around align-items-center px-5">
+        <button class="btn border border-secondary rounded-pill px-3"><a class="text-dark" href="#about">Mehr Infos</a></button>
+        <button class="sign-in-btn btn border border-secondary rounded-pill px-3 ms-auto me-4" data-bs-toggle="modal" data-bs-target="#modal_for_signup">Registrieren</button>
+        <button class="login-btn btn border border-dark rounded-pill px-3 neutral-btns" data-bs-toggle="modal" data-bs-target="#modal_for_login">Einloggen</button>
+    </nav>
+    <article class="about-article container-fluid" id="about">
+        <h2 class="text-secondary mb-5"><p>Warum zum Vokabellernen hunderte Karten mitschleppen,</p><p>wenn du sie im Handy haben kannst?!</p></h2>
+        <hr class="hr-color mb-5">
+        <section class="feature-wrapper d-flex flex-column justify-content-around align-items-center">
+            <div class="feature-wrapper text-secondary w-50 mb-5">
+                <h6 class="fs-5">Rumschleppen ist Geschichte:</h6>
+                <p class="lh-lg fs-6">Speicher deine Vokabelkarten einmalig hier ein und du hast Zugriff darauf, von überall.</p>
+            </div>
+            <div class="feature-wrapper text-secondary w-50 mb-5">
+                <h6 class="fs-5">Mehr als nur abfragen:</h6>
+                <p class="lh-lg fs-6">Mit dem Lernmodus wird bei jeder Abfrage mitgezählt, ob du richtig oder falsch lagst.</p>
+            </div>
+            <div class="feature-wrapper text-secondary w-50 mb-5">
+                <h6 class="fs-5">Schwächen auf einen Blick erkennen:</h6>
+                <p class="lh-lg fs-6">Aus den Lernergebnissen wird für jede Vokabel ein Level ermittelt. Makiere dir die Karten, bei denen du besonderen Lernbedarf hast!</p>
+            </div>
+            <div class="feature-wrapper text-secondary w-50 mb-5">
+                <h6 class="fs-5">Ein Account, alle Anwendungen:</h6>
+                <p class="lh-lg fs-6">Mit einem einzigen Account bist du in der Lage, alle Anwengungen von Dev Kamedin zu nutzen (Vokabeltrainer, Finanztracker und zukünftige...)</p>
+            </div>
+        </section>
+    </article>
+
+
+
+
+
+
+    <!-- if a user is logged in, this site must not be shown, instead it redirects to sites/start.html -->
+
+    <script src="./libs/js/bootstrap.bundle.min.js" defer></script>
+    <script src="./src/js/helper/globals/globals.js" defer></script>
+    <script src="./src/js/before_login/frontend/inputs_in_modals.js"></script>
+    <script src="./src/js/helper/ajax/ajax.js" defer></script>
+    <script src="./src/js/helper/alerts/render_alerts.js" defer></script>
+    <script src="./src/js/validation/Validator.js" defer></script>
+    <script src="./src/js/validation/landingpage_forms/form_handling.js" defer></script>
+    <script src="./src/js/helper/loginfo/logInfo.js" defer></script>
+</body>
+</html>

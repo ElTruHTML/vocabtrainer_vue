@@ -1,0 +1,30 @@
+:root {
+    --kame-blue: #151929;
+    
+    --card-bg: #C2C2C1;
+    --card-red-line: #FF8F8F;
+
+    --neutral-btn-bg-blue: #8494C3;
+    --hr-color: rgb(173, 103, 120);
+
+
+    /* Button-backgrounds: */
+    --not-clickable-btn-bg: #828282;
+    --green-btn-bg: #649B3F;
+    --blue-btn-bg: #0070C0;
+    --red-btn-bg: #FF4F4F;
+    --orange-btn-bg: orange;
+    --yellow-btn-bg: yellow;
+
+    /* Level indicators:*/
+    --lvl4: var(--green-btn-bg);
+    --lvl3: rgb(179, 179, 0);
+    --lvl2: var(--orange-btn-bg);
+    --lvl1: var(--red-btn-bg);
+    --lvl0: var(--delete-btn-bg);
+;
+    --disabled-btn-bg: #afafaf;
+    --delete-btn-bg: firebrick;
+
+    --fontawesome-color: rgb(30, 48, 80);
+}
